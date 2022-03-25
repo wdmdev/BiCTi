@@ -1,7 +1,8 @@
-FROM python:3.9-slim-buster
+FROM continuumio/miniconda3:4.10.3
 
-RUN apt-get update -y
-RUN apt-get install git -y
+#Install Python libraries
+COPY environment.yml .
+RUN conda env create -f environment.yml
 
-COPY ../requirements.txt .
-RUN pip install -r requirements.txt
+# Activate conda for local development with orgenv kernel conda environment 
+SHELL ["conda", "run", "-n", "bicti", "/bin/bash", "-c"]

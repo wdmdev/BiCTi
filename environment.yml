@@ -1,0 +1,18 @@
+name: bicti
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.9
+  - pip=22.0.2
+  - ipykernel
+  - pip:
+    # Jupyter installs
+    - jupyter==1.0.0
+    - ipywidgets==7.6.5
+    # Regular python installs
+    - numpy==1.22.1
+    - pydantic==1.9.0
+    - scrapy==2.6.1
+    - seaborn==0.11.2
+    - pandas==1.4.1
