@@ -11,5 +11,10 @@ class DRSpider(scrapy.Spider):
     }
 
     def parse(self, response):
-        for title in response.css('.dre-title-text'):
-            yield {'title': title.css('::text').get()}
+        for teaser in response.css('.dre-teaser-list__item'):
+            time = teaser.css('.dre-teaser-meta-label').css('::text').getall()[1]
+            title = ' '.join(teaser.css('.dre-title-text').css('::text').getall())
+            yield {
+                'time': time,
+                'title': title
+            }
