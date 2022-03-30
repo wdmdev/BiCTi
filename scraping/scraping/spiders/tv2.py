@@ -13,10 +13,16 @@ class TV2Spider(scrapy.Spider):
 
     def parse(self, response):
         for teaser in response.css('.tc_teaser'):
-            label = teaser.css('.tc_label')
-            label_text = label.css('::text').get().lower()
-            print(label_text)
-            if 'rusland invaderer ukraine' in label_text:
-                title = teaser.css('.tc_heading')
-                text = title.css('::text').get()
-                yield {'title': text}
+            label = teaser.css('.tc_label::text').get().lower().strip()
+            if 'rusland invaderer ukraine' == label:
+                url = teaser.css('a::attr(href)').get()
+                yield scrapy.Request(url, callback=self.parse_teaser_content)
+
+    
+    def parse_teaser_content(self, response):
+        title = response.css('.tc_heading::text').get()
+        time = response.css('.tc_timestamp::attr(datetime)').get()
+        yield {
+            'time': time,
+            'title': title
+        }
